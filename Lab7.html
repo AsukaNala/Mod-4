@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lab7</title>
+    <style>
+      .box {
+        width: 300px;
+        height: 300px;
+        animation-name: updown;
+        animation-duration: 4s;
+        position: relative;
+        animation-iteration-count: 3;
+        background-color: red;
+      }
+      @keyframes updown {
+        from {
+          top: 0px;
+          background-color: red;
+        }
+
+        to {
+          top: 500px;
+          background-color: blue;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

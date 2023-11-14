@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <style>
+      div {
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>The number of days between my birthday and the current date.</h1>
+    <div id="q1"></div>
+    <h1>
+      The number of years, months and days between my birthday and current date.
+    </h1>
+    <div id="q2"></div>
+    <h1>Which is closer date?</h1>
+    <div id="q3"></div>
+    <h1>Which is before or after?</h1>
+    <div id="q4"></div>
+    <h1>London is now...</h1>
+    <div id="q5"></div>
+    <script>
+      // (1)
+      const today = moment(); // get todays date
+      let birthday = moment("1984-05-11");
+      const differenceDays = today.diff(birthday, "days");
+      const displayDate = document.getElementById("q1"); //just getting element from indicated id
+      displayDate.innerHTML = `There are ${differenceDays} days between my birthday and now.`; //displayDate.innerHTML is empty, now put new text in the element.
+
+      // (2)
+      const duration = moment.duration(today.diff(birthday));
+      const years = duration.years();
+      const months = duration.months();
+      const days = duration.days();
+      const displayDateB = document.getElementById("q2");
+      displayDateB.innerHTML = `There are ${years} years, ${months} months and ${days} days between my birthday and now.`;
+
+      //(3)
+      function getCloserDate(date1, date2) {
+        const dateA = moment(date1, "DD-MM-YYYY"); //format
+        const dateB = moment(date2, "DD-MM-YYYY");
+        const diffA = today.diff(dateA, "days");
+        const diffB = today.diff(dateB, "days");
+        const closerDate =
+          diffA > diffB
+            ? `${dateB} is closer to today.`
+            : `${dateA} is closer to today`;
+        return (document.getElementById("q3").innerHTML = closerDate);
+      }
+      getCloserDate("11-05-2011", "11-05-2021");
+
+      //(4)
+      function checkBeforeAfter(date1, date2) {
+        const dateA = moment(date1, "DD-MM-YYYY"); //format
+        const dateB = moment(date2, "DD-MM-YYYY");
+        if (moment(date1).isBefore(date2)) {
+          return (document.getElementById(
+            "q4"
+          ).innerHTML = `${date1} is before ${date2}`);
+        } else {
+          return (document.getElementById(
+            "q4"
+          ).innerHTML = `${date1} is after ${date2}`);
+        }
+      }
+      checkBeforeAfter("11-05-2011", "11-05-2021");
+
+      //(5)
+      const londonTime = moment().tz("Europe/London");
+      document.getElementById("q5").innerHTML = londonTime.format(
+        "DD-MM-YYYY HH.mm.ss"
+      );
+    </script>
+  </body>
+</html>

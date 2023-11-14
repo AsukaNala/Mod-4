@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eCharts</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <!-- Prepare a DOM with a defined width and height for ECharts -->
+    <div id="main" style="width: 900px; height: 600px"></div>
+    <script type="text/javascript">
+      // Specify the configuration items and data for the chart
+      let options = {
+        title: { text: "Fake Store Categories" },
+        xAxis: {
+          data: ["Category 1", "Category 2", "Category 3", "Category 4"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "# products",
+            type: "bar",
+            data: [0, 1, 5, 2],
+          },
+        ],
+      };
+      fetch("https://fakestoreapi.com/products")
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          // use this JSON to find and set correct option data for the chart
+          const newCategory = json.map((item) => item.category); // get all categories
+          const uniqueCategory = Array.from(new Set(newCategory)); //get unique categories
+          //console.log(newCategory);
+          //console.log(uniqueCategory);
+
+          const newData = Array.from(
+            //making newdata number array
+            uniqueCategory.map((uniqCat) => {
+              //with uniqueCayegory array making new array to get the number of each category
+              const count = newCategory.filter(
+                // from newCategory array, filter out the category same as the category in uniqueCategory
+                (categories) => categories === uniqCat
+              ).length; //'count' makes arrays for each category without .length. To have .length, 'count' shows how many category in each array.
+              console.log(count);
+              return [uniqCat, count];
+            })
+          );
+          console.log(newData);
+
+          options.xAxis.data = uniqueCategory;
+          options.series[0].data = newData;
+        })
+        .then(() => {
+          // Display the chart
+          myChart.setOption(options);
+        });
+      // Initialise the echarts instance based on the prepared div
+      let myChart = echarts.init(document.getElementById("main"));
+    </script>
+  </body>
+</html>
